@@ -24,6 +24,15 @@ return new class extends Migration
             $t->softDeletes();
         });
 
+        Schema::create('owner_profile', function (Blueprint $t) {
+            $t->id(); // gunakan id=1
+            $t->string('legal_name')->nullable();
+            $t->string('tax_id', 64)->nullable();
+            $t->json('payout_details')->nullable();
+            $t->json('business_settings')->nullable();
+            $t->timestamps();
+        });
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -45,6 +54,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('owner_profile');
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
