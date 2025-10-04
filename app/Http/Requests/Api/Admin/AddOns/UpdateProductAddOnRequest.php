@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Api\Admin\Products;
+namespace App\Http\Requests\Api\Admin\AddOns;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreProductUnitRequest extends FormRequest
+class UpdateProductAddOnRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +15,6 @@ class StoreProductUnitRequest extends FormRequest
         return $this->user()?->role !== 'customer';
     }
 
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,10 +23,10 @@ class StoreProductUnitRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code'      => 'required|string|max:191',
-            'serial_no' => 'nullable|string|max:191',
-            'status'    => 'nullable|in:available,maintenance,retired',
-            'metadata'  => 'nullable|array',
+            'overrides'            => ['required', 'array'],
+            'overrides.price'      => ['nullable', 'numeric', 'min:0'],
+            'overrides.price_unit' => ['nullable', Rule::in(['per_booking', 'per_day', 'per_hour', 'per_person'])],
+            'overrides.required'   => ['nullable', 'boolean'],
         ];
     }
 }

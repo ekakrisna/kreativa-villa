@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api\Admin\Products;
+namespace App\Http\Requests\Api\Admin\Cateogry;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductUnitRequest extends FormRequest
+class StoreCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,6 @@ class StoreProductUnitRequest extends FormRequest
         return $this->user()?->role !== 'customer';
     }
 
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,10 +22,9 @@ class StoreProductUnitRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code'      => 'required|string|max:191',
-            'serial_no' => 'nullable|string|max:191',
-            'status'    => 'nullable|in:available,maintenance,retired',
-            'metadata'  => 'nullable|array',
+            'name'      => ['required', 'string', 'max:191'],
+            'slug'      => ['nullable', 'string', 'max:191', 'unique:categories,slug'],
+            'parent_id' => ['nullable', 'integer', 'exists:categories,id'],
         ];
     }
 }

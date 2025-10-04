@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\Admin\AddOns;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreAddOnRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreAddOnRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()?->role !== 'customer';
     }
 
     /**
@@ -22,7 +23,16 @@ class StoreAddOnRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title'                => ['required', 'string', 'max:191'],
+            'description'         => ['nullable', 'string'],
+            'price'               => ['required', 'numeric', 'min:0'],
+            'price_unit'          => ['required', Rule::in(['per_booking', 'per_day', 'per_hour', 'per_person'])],
+            'required'            => ['boolean'],
+            'applicable_to'       => ['required', Rule::in(['villa', 'motor', 'car', 'helmet', 'tour'])],
+            'is_inventory_tracked' => ['boolean'],
+            'inventory_qty'       => ['nullable', 'integer', 'min:0'],
+            'metadata'            => ['nullable', 'array'],
+            'status'              => ['required', Rule::in(['active', 'inactive'])],
         ];
     }
 }
