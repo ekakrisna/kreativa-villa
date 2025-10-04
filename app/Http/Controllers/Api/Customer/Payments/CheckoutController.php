@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Http\Controllers\Api\Customer\Payments;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class CheckoutController extends Controller
+{
+    //
+}

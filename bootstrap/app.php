@@ -9,12 +9,21 @@ use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
+
+        $middleware->alias([
+            'role_web'              => \App\Http\Middleware\RoleMiddleware::class,
+            'force.json'        => \App\Http\Middleware\ForceJsonResponse::class,
+            'locale.from.header' => \App\Http\Middleware\LocaleFromHeader::class,
+            'role'              => \App\Http\Middleware\EnsureRole::class,
+            'booking.owner'     => \App\Http\Middleware\EnsureBookingOwner::class,
+            'webhook.signature' => \App\Http\Middleware\VerifyWebhookSignature::class,
+        ]);
 
         $middleware->web(append: [
             HandleAppearance::class,
