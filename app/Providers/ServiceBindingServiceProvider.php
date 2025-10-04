@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\Services\AddOns\AddOnService;
+use App\Services\AddOns\ProductAddOnService;
 use App\Services\Catalog\ProductQueryService;
 use App\Services\Categories\CategoryService;
+use App\Services\Contracts\AddOnServiceInterface;
 use App\Services\Contracts\AvailabilityBlockServiceInterface;
 use App\Services\Contracts\CategoryServiceInterface;
 use App\Services\Contracts\MediaServiceInterface;
+use App\Services\Contracts\ProductAddOnServiceInterface;
 use App\Services\Contracts\ProductQueryServiceInterface;
 use App\Services\Contracts\ProductServiceInterface;
 use App\Services\Contracts\ProductUnitServiceInterface;
@@ -32,6 +36,8 @@ class ServiceBindingServiceProvider extends ServiceProvider
         $this->app->bind(CategoryServiceInterface::class, CategoryService::class);
         $this->app->bind(SeasonalPricingServiceInterface::class, SeasonalPricingService::class);
         $this->app->bind(AvailabilityBlockServiceInterface::class, AvailabilityBlockService::class);
+        $this->app->bind(AddOnServiceInterface::class, AddOnService::class);
+        $this->app->bind(ProductAddOnServiceInterface::class, ProductAddOnService::class);
     }
 
     /**
